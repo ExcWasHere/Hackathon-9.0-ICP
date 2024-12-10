@@ -4,6 +4,7 @@ import Header from "~/common/header";
 import IndexDiscoverSection from "~/components/discover";
 import IndexHero from "~/components/homepage";
 import IndexReview from "~/components/review";
+import IndexLogo from "~/components/sponsor";
 
 export const meta: MetaFunction = () => {
   return [
@@ -19,6 +20,7 @@ export default function Index() {
     <IndexHero />
     <IndexDiscoverSection />
     <IndexReview />
+    <IndexLogo />
     <Footer />
     </>
   );
