@@ -11,7 +11,7 @@ const Header: React.FC<HeaderProps> = () => {
 
   useEffect(() => {
     if (
-      currentPage.pathname === "/categories" ||
+      currentPage.pathname === "/booking" ||
       currentPage.pathname === "/dashboard" 
     ) {
       setIsScrolled(true);
