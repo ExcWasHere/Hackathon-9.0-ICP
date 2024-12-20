@@ -1,79 +1,75 @@
 import { useState } from "react";
-import { useNavigate } from "@remix-run/react";
-import type { ActionFunctionArgs } from "@remix-run/node";
-import { Groq } from "groq-sdk";
 import { MapPin, Calendar, Bus, Clock, Utensils, Ticket } from "lucide-react";
 
-interface Location {
-  city: string;
-  province: string;
-}
+// Create Groq client
+const GROQ_API_KEY = "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";
 
-interface Recommendation {
-  entertainment: Array<{
-    name: string;
-    description: string;
-    rating: number;
-  }>;
-  dining: Array<{
-    name: string;
-    cuisine: string;
-    rating: number;
-    priceRange: string;
-  }>;
-  meetings: Array<{
-    name: string;
-    type: string;
-    capacity: string;
-  }>;
-}
-
-export const action = async ({ request }: ActionFunctionArgs) => {
-  const formData = await request.formData();
-  const destination = formData.get("destination") as string;
-  
-  const groq = new Groq({
-    apiKey: process.env.GROQ_API_KEY
-  });
-
-  const prompt = `Generate recommendations for ${destination} including:
-    - 3 popular entertainment venues or tourist attractions
-    - 3 well-known restaurants or food spots
-    - 2 business meeting venues
-    Format as JSON matching the Recommendation interface.`;
-
-  const completion = await groq.chat.completions.create({
-    messages: [{ role: "user", content: prompt }],
-    model: "mixtral-8x7b-32768",
-  });
-
-  return JSON.parse(completion.choices[0]?.message?.content || "{}");
-};
-
-export default function Booking() {
-  const navigate = useNavigate();
+const BookingPage = () => {
   const [fromLocation, setFromLocation] = useState("");
   const [toLocation, setToLocation] = useState("");
-  const [busType, setBusType] = useState<"regular" | "sleeper">("regular");
+  const [busType, setBusType] = useState("regular");
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
   const [showRecommendations, setShowRecommendations] = useState(false);
-  const [recommendations, setRecommendations] = useState<Recommendation | null>(null);
+  const [recommendations, setRecommendations] = useState(null);
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const getRecommendations = async (destination) => {
+    try {
+      const response = await fetch("https://api.groq.com/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${GROQ_API_KEY}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          model: "mixtral-8x7b-32768",
+          messages: [{
+            role: "user",
+            content: `Generate recommendations for ${destination} including:
+              - 3 popular entertainment venues or tourist attractions
+              - 3 well-known restaurants or food spots
+              - 2 business meeting venues
+              
+              Format the response as a JSON object with this exact structure:
+              {
+                "entertainment": [
+                  { "name": "string", "description": "string", "rating": number }
+                ],
+                "dining": [
+                  { "name": "string", "cuisine": "string", "rating": number, "priceRange": "string" }
+                ],
+                "meetings": [
+                  { "name": "string", "type": "string", "capacity": "string" }
+                ]
+              }`
+          }]
+        })
+      });
+
+      const data = await response.json();
+      const recommendations = JSON.parse(data.choices[0].message.content);
+      return recommendations;
+    } catch (error) {
+      console.error("Error fetching recommendations:", error);
+      return null;
+    }
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     
     try {
-      const response = await fetch("/api/book", {
-        method: "POST",
-        body: new FormData(e.target as HTMLFormElement),
-      });
-      
-      const data = await response.json();
-      setRecommendations(data);
-      setShowRecommendations(true);
+      const recs = await getRecommendations(toLocation);
+      if (recs) {
+        setRecommendations(recs);
+        setShowRecommendations(true);
+      }
     } catch (error) {
       console.error("Booking error:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -95,10 +91,9 @@ export default function Booking() {
                 </label>
                 <input
                   type="text"
-                  name="fromLocation"
                   value={fromLocation}
                   onChange={(e) => setFromLocation(e.target.value)}
-                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-violet-500 focus:border-transparent transition duration-200"
+                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-violet-500 focus:border-transparent"
                   placeholder="Enter departure city"
                   required
                 />
@@ -112,10 +107,9 @@ export default function Booking() {
                 </label>
                 <input
                   type="text"
-                  name="toLocation"
                   value={toLocation}
                   onChange={(e) => setToLocation(e.target.value)}
-                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-violet-500 focus:border-transparent transition duration-200"
+                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-violet-500 focus:border-transparent"
                   placeholder="Enter destination city"
                   required
                 />
@@ -168,7 +162,6 @@ export default function Booking() {
                   </label>
                   <input
                     type="date"
-                    name="date"
                     value={date}
                     onChange={(e) => setDate(e.target.value)}
                     className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-violet-500 focus:border-transparent"
@@ -182,7 +175,6 @@ export default function Booking() {
                   </label>
                   <input
                     type="time"
-                    name="time"
                     value={time}
                     onChange={(e) => setTime(e.target.value)}
                     className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-violet-500 focus:border-transparent"
@@ -193,17 +185,20 @@ export default function Booking() {
 
               <button
                 type="submit"
-                className="w-full bg-violet-600 text-white py-4 rounded-xl font-semibold text-lg hover:bg-violet-700 transition duration-200 flex items-center justify-center gap-2"
+                disabled={loading}
+                className={`w-full bg-violet-600 text-white py-4 rounded-xl font-semibold text-lg hover:bg-violet-700 transition duration-200 flex items-center justify-center gap-2 ${
+                  loading ? "opacity-50 cursor-not-allowed" : ""
+                }`}
               >
                 <Ticket className="w-5 h-5" />
-                Book Now
+                {loading ? "Loading..." : "Book Now"}
               </button>
             </div>
           </form>
 
           {/* Recommendations Section */}
           {showRecommendations && recommendations && (
-            <div className="mt-12 space-y-8 animate-fade-in">
+            <div className="mt-12 space-y-8">
               <h2 className="text-3xl font-bold text-center mb-8">
                 Recommended for Your Trip to {toLocation}
               </h2>
@@ -284,4 +279,6 @@ export default function Booking() {
       </div>
     </div>
   );
-}
+};
+
+export default BookingPage;
