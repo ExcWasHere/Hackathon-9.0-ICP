@@ -1,9 +1,8 @@
-import { useState, useEffect } from "react";
-import { Form, useActionData, useNavigation } from "@remix-run/react";
+import { useState } from "react";
+import { useNavigate } from "@remix-run/react";
 import type { ActionFunctionArgs } from "@remix-run/node";
-import { json } from "@remix-run/node";
 import { Groq } from "groq-sdk";
-import { MapPin, Calendar, Bus, Clock, Utensils, Ticket, Loader2 } from "lucide-react";
+import { MapPin, Calendar, Bus, Clock, Utensils, Ticket } from "lucide-react";
 
 interface Location {
   city: string;
@@ -31,51 +30,52 @@ interface Recommendation {
 
 export const action = async ({ request }: ActionFunctionArgs) => {
   const formData = await request.formData();
-  const destination = formData.get("toLocation") as string;
-  const busType = formData.get("busType") as string;
+  const destination = formData.get("destination") as string;
   
   const groq = new Groq({
     apiKey: process.env.GROQ_API_KEY
   });
 
-  try {
-    const prompt = `Generate recommendations for ${destination} including:
-      - 3 popular entertainment venues or tourist attractions
-      - 3 well-known restaurants or food spots
-      - 2 business meeting venues
-      Format as JSON with entertainment, dining, and meetings arrays.`;
+  const prompt = `Generate recommendations for ${destination} including:
+    - 3 popular entertainment venues or tourist attractions
+    - 3 well-known restaurants or food spots
+    - 2 business meeting venues
+    Format as JSON matching the Recommendation interface.`;
 
-    const completion = await groq.chat.completions.create({
-      messages: [{ role: "user", content: prompt }],
-      model: "mixtral-8x7b-32768",
-    });
+  const completion = await groq.chat.completions.create({
+    messages: [{ role: "user", content: prompt }],
+    model: "mixtral-8x7b-32768",
+  });
 
-    const recommendations = JSON.parse(completion.choices[0]?.message?.content || "{}");
-    
-    return json({ success: true, recommendations });
-  } catch (error) {
-    console.error("Error:", error);
-    return json({ success: false, error: "Failed to get recommendations" }, { status: 500 });
-  }
+  return JSON.parse(completion.choices[0]?.message?.content || "{}");
 };
 
 export default function Booking() {
+  const navigate = useNavigate();
   const [fromLocation, setFromLocation] = useState("");
   const [toLocation, setToLocation] = useState("");
   const [busType, setBusType] = useState<"regular" | "sleeper">("regular");
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
   const [showRecommendations, setShowRecommendations] = useState(false);
+  const [recommendations, setRecommendations] = useState<Recommendation | null>(null);
 
-  const navigation = useNavigation();
-  const actionData = useActionData<typeof action>();
-  const isSubmitting = navigation.state === "submitting";
-
-  useEffect(() => {
-    if (actionData?.success) {
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    try {
+      const response = await fetch("/api/book", {
+        method: "POST",
+        body: new FormData(e.target as HTMLFormElement),
+      });
+      
+      const data = await response.json();
+      setRecommendations(data);
       setShowRecommendations(true);
+    } catch (error) {
+      console.error("Booking error:", error);
     }
-  }, [actionData]);
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-violet-50 pt-20">
@@ -85,7 +85,7 @@ export default function Booking() {
             Book Your <span className="text-violet-600">E-Bus Journey</span>
           </h1>
 
-          <Form method="post" className="space-y-8">
+          <form onSubmit={handleSubmit} className="space-y-8">
             <div className="bg-white rounded-2xl shadow-xl p-6 space-y-6">
               {/* From Location */}
               <div className="space-y-2">
@@ -127,7 +127,6 @@ export default function Booking() {
                   <Bus className="w-5 h-5 mr-2 text-violet-500" />
                   Select Bus Type
                 </label>
-                <input type="hidden" name="busType" value={busType} />
                 <div className="grid grid-cols-2 gap-4">
                   <button
                     type="button"
@@ -194,26 +193,16 @@ export default function Booking() {
 
               <button
                 type="submit"
-                disabled={isSubmitting}
-                className="w-full bg-violet-600 text-white py-4 rounded-xl font-semibold text-lg hover:bg-violet-700 transition duration-200 flex items-center justify-center gap-2 disabled:bg-violet-400"
+                className="w-full bg-violet-600 text-white py-4 rounded-xl font-semibold text-lg hover:bg-violet-700 transition duration-200 flex items-center justify-center gap-2"
               >
-                {isSubmitting ? (
-                  <>
-                    <Loader2 className="w-5 h-5 animate-spin" />
-                    Processing...
-                  </>
-                ) : (
-                  <>
-                    <Ticket className="w-5 h-5" />
-                    Book Now
-                  </>
-                )}
+                <Ticket className="w-5 h-5" />
+                Book Now
               </button>
             </div>
-          </Form>
+          </form>
 
           {/* Recommendations Section */}
-          {showRecommendations && actionData?.recommendations && (
+          {showRecommendations && recommendations && (
             <div className="mt-12 space-y-8 animate-fade-in">
               <h2 className="text-3xl font-bold text-center mb-8">
                 Recommended for Your Trip to {toLocation}
