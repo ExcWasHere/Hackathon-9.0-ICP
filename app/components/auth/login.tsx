@@ -1,35 +1,35 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "@remix-run/react";
-import { Eye, EyeOff, Lock, Mail, User } from "lucide-react";
-import axios from "axios";
+import { Eye, EyeOff, Lock, Mail } from "lucide-react";
 
-export default function RegisterForm() {
+export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [name, setName] = useState("");
+  const [rememberMe, setRememberMe] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [confPassword, setConfPassword] = useState("");
   const [msg, setMsg] = useState("");
   const navigate = useNavigate();
 
-  const Register = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (password !== confPassword) {
-      setMsg("Passwords do not match.");
-      return;
-    }
+  const validUsers = [
+    { email: "user@example.com", password: "password123", name: "Excell" },
+    { email: "admin@example.com", password: "admin123", name: "Admin User" }
+  ];
 
-    try {
-      const response = await axios.post("http://localhost:5173/users", {
-        name: name,
-        email: email,
-        password: password,
-        confPassword: confPassword,
-      });
-      navigate("/login");
-    } catch (error) {
-      setMsg("Does the account exist?");
+  const Auth = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    
+    const user = validUsers.find(
+      u => u.email === email && u.password === password
+    );
+
+    if (user) {
+      localStorage.setItem('isAuthenticated', 'true');
+      localStorage.setItem('userEmail', email);
+      localStorage.setItem('userName', user.name);
+
+      navigate("/booking");
+    } else {
+      setMsg("Email atau password salah");
     }
   };
 
@@ -37,7 +37,7 @@ export default function RegisterForm() {
     <div className="min-h-screen bg-violet-50 flex items-center justify-center">
       <div className="w-full max-w-md px-4 py-8 sm:px-0">
         <div className="bg-white rounded-lg shadow-xl p-8 w-full">
-          {/* Logo/Icon */}
+          {/* Logo dan Header */}
           <div className="mb-8 text-center">
             <div className="w-16 h-16 bg-violet-100 rounded-full flex items-center justify-center mx-auto">
               <svg
@@ -55,40 +55,23 @@ export default function RegisterForm() {
               </svg>
             </div>
             <h2 className="text-2xl font-bold text-gray-900 mt-4">
-              Create Your Account
+              Welcome Back
             </h2>
             <p className="text-gray-600 mt-2">
-              Join our E-Bus community today
+              Sign in to access your booking dashboard
             </p>
           </div>
 
-          {/* Register Form */}
-          <form onSubmit={Register} className="space-y-6">
-            {/* Name Field */}
-            <div>
-              <label
-                className="block text-sm font-medium text-gray-700 mb-2"
-                htmlFor="name"
-              >
-                Full Name
-              </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <User className="h-5 w-5 text-gray-400" />
-                </div>
-                <input
-                  id="name"
-                  type="text"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  required
-                  className="block w-full pl-10 pr-3 py-2 border text-slate-900 border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-violet-500 sm:text-sm"
-                  placeholder="ExcGanteng"
-                />
-              </div>
+          {/* Tampilkan pesan error jika login gagal */}
+          {msg && (
+            <div className="mb-4 text-center text-red-500">
+              {msg}
             </div>
+          )}
 
-            {/* Email Field */}
+          {/* Form login (mirip sebelumnya) */}
+          <form onSubmit={Auth} className="space-y-6">
+            {/* Email Field - tidak berubah */}
             <div>
               <label
                 className="block text-sm font-medium text-gray-700 mb-2"
@@ -112,7 +95,7 @@ export default function RegisterForm() {
               </div>
             </div>
 
-            {/* Password Field */}
+            {/* Password Field - tidak berubah */}
             <div>
               <label
                 className="block text-sm font-medium text-gray-700 mb-2"
@@ -147,38 +130,30 @@ export default function RegisterForm() {
               </div>
             </div>
 
-            {/* Confirm Password Field */}
-            <div>
-              <label
-                className="block text-sm font-medium text-gray-700 mb-2"
-                htmlFor="confirmPassword"
-              >
-                Confirm Password
-              </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Lock className="h-5 w-5 text-gray-400" />
-                </div>
+            {/* Bagian Remember Me & Forgot Password - tidak berubah */}
+            <div className="flex items-center justify-between">
+              <div className="flex items-center">
                 <input
-                  id="confirmPassword"
-                  type={showConfirmPassword ? "text" : "password"}
-                  value={confPassword}
-                  onChange={(e) => setConfPassword(e.target.value)}
-                  required
-                  className="block w-full pl-10 pr-10 py-2 border text-slate-900 border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-violet-500 sm:text-sm"
-                  placeholder="••••••••"
+                  id="remember-me"
+                  type="checkbox"
+                  className="before: appearance-none checked:bg-violet-600 checked:border-transparent bg-slate-100 rounded-sm after: h-4 w-4 text-violet-600 focus:ring-violet-50"
+                  checked={rememberMe}
+                  onChange={(e) => setRememberMe(e.target.checked)}
                 />
-                <button
-                  type="button"
-                  className="absolute inset-y-0 right-0 pr-3 flex items-center"
-                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                <label
+                  htmlFor="remember-me"
+                  className="ml-2 block text-sm text-gray-700"
                 >
-                  {showConfirmPassword ? (
-                    <EyeOff className="h-5 w-5 text-gray-400" />
-                  ) : (
-                    <Eye className="h-5 w-5 text-gray-400" />
-                  )}
-                </button>
+                  Remember me
+                </label>
+              </div>
+              <div className="text-sm">
+                <Link
+                  to="/forgot-password"
+                  className="font-medium text-violet-600 hover:text-violet-500"
+                >
+                  Forgot your password?
+                </Link>
               </div>
             </div>
 
@@ -187,19 +162,19 @@ export default function RegisterForm() {
               type="submit"
               className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-violet-600 hover:bg-violet-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-violet-500 transition-colors duration-300"
             >
-              Create Account
+              Sign in
             </button>
           </form>
 
-          {/* Login Link */}
+          {/* Sign Up Link - tidak berubah */}
           <div className="mt-6 text-center">
             <p className="text-sm text-gray-600">
-              Already have an account?{" "}
+              Dont have an account?{" "}
               <Link
-                to="/login"
+                to="/register"
                 className="font-medium text-violet-600 hover:text-violet-500"
               >
-                Sign in
+                Sign up for free
               </Link>
             </p>
           </div>

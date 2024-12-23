@@ -31,13 +31,6 @@ const sponsorsData: Sponsor[] = [
     description: "Ahli dalam pengembangan perangkat lunak kustom",
     websiteUrl: "https://codecraft.example.com"
   },
-  {
-    id: 4,
-    name: "DataPulse Analytics",
-    logo: "https://via.placeholder.com/150?text=Logo+4",
-    description: "Transformasi data menjadi wawasan strategis",
-    websiteUrl: "https://datapulse.example.com"
-  }
 ];
 
 export const meta: MetaFunction = () => {
