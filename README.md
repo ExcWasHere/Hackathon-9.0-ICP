@@ -1,11 +1,11 @@
 # EcoNova
 Poltek Suhat
 terdiri dari lima anggota yaitu: 
-Excel Christian Wulantoro Sadik
-Tria Ananda Fadillah
-Nafilah Firyal Hana
-Wahyu Fairuz Daniswaya
-Angelina Thennessa Jo 
+Excel Christian Wulantoro Sadik,
+Tria Ananda Fadillah,
+Nafilah Firyal Hana,
+Wahyu Fairuz Daniswaya,
+Angelina Thennessa Jo.
 
 Kami membangun proyek ini berdasarkan masalah yang kami temukan berdasarkan pengamatan dan pengalaman para anggota tim yakni:
 - Kendaraan umum yang tidak ramah lingkungan memperparah lingkungan sekitar dan mengancam kesehatan masyarakat. Selain itu, bahan bakar bensin adalah sumber daya yang tidak dapat diperbaharui dalam waktu singkat, yang menyebabkan kekhawatiran akan keberlanjutan di masa mendatang.
