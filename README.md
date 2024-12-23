@@ -17,3 +17,12 @@ Dengan adanya masalah-masalah tersebut kami membuat sebuah website yang bertujua
 Dengan adanya website ini diharapkan kedepannya dapat meningkatkan minat wisatawan untuk berkunjung ke objek-objek wisata di Indonesia, sekaligus mengurangi polusi yang ada. Seiring berjalannya waktu serta feedback yang diterima oleh pengguna Kami nantinya, kamu akan terus berkembang memberikan layanan informasi wisata; sambil mempromosikan penggunaan bus listrik, yang nantinya diharapkan dapat berkolaborasi dengan pemangku kepentingan seperti perusahaan sektor wisata dan komunitas untuk mendukung implementasi ini secara berkelanjutan, yang akhirnya kami pun dapat meingkatkan fitur website kami sambil menyesuaikan bagi kebutuhan konsumen di lapangan.
 
 Dengan visi ini, kami yakin mampu memberikan dampak positif bagi lingkungan industri pariwisata di wilayah, sambil meningkatkan kualitas pengalaman wisatawan dan kesehatan lingkungan masyarakat secara keseluruhan. Serta dengan mengintegrasikan konsep Smart City kami menyediakan solusi dengan teknologi sehingga mampu menciptakan lingkungan kota yang lebih efisien. Kami yakin dengan Econova, kami dapat membawa dampak positif bagi lingkungan, masyarakat, dan pariwisata secara keseluruhan.
+
+Isi dari web:
+1. HomePage: Berisi cover ide kami
+2. About-usPage: Berisi tentang tim kami dan tentang ide kami
+3. SupportPage: Berisi halaman FaQ dan bantuan-bantuan tentang web kami
+4. BookingPage: BookingPage hanya dapat diakses ketika user sudah register/login, di dalam BookingPage user dapat menginput data data yang diperlukan dan nantinya AI akan mengenerate rekomendasi tempat wisata, makan, meeting bisnis terdekat sesuai dengan lokasi yang akan dituju oleh user. setelah user selesai booking nantinya data akan diberikan ke SchedulePage.
+5. SchedulePage: Menghasilkan output berupa tiket perjalanan berisi( Harga, Tipe Bus, Nomor kursi, Dll), Perjalanan yang akan ditempuh dan sudah ditempuh, beserta filter berdasarkan kota.
+6. SettingPage: Berisi tentang halaman setting untuk user
+7. logoutButton: User akan otomatis keluar dan kembali ke halaman Home.

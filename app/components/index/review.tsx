@@ -8,59 +8,37 @@ import {
 
 interface FarmerReview {
   id: string;
-  farmerName: string;
+  passengerName: string;
   serviceType: string;
   date: string;
   usageType?: string;
   content: string;
   image?: string;
-  verifiedFarmer: boolean;
+  verifiedPassenger: boolean;
 }
 
 const agriEaseReviews: FarmerReview[] = [
   {
     id: "ae001",
-    farmerName: "Robby Gunawan",
+    passengerName: "Robby Gunawan",
     serviceType: "Kenyamanan Berkendara",
     date: "18-10-2024",
     usageType: "Tidak menimbulkan polusi",
     content:
       "Biasanya bus-bus pada umumnya berbahan bakar solar atau sejenisnya, mengakibatkan asap yang keluar dari knalpot berwarna hitam pekat dan merugikan pengendara sekitar bus, saya sering kasihan pada pengendara yang terkena asap bus karna saya pernah mengalaminya.",
-    image: "Passenger1.PNG",
-    verifiedFarmer: true,
-  },
-  {
-    id: "ae002",
-    farmerName: "#",
-    serviceType: "#",
-    date: "05-11-2024",
-    usageType: "#",
-    content:
-      "#",
     image: "#",
-    verifiedFarmer: true,
-  },
-  {
-    id: "ae003",
-    farmerName: "#",
-    serviceType: "#",
-    date: "22-11-2024",
-    usageType: "#",
-    content:
-      "#",
-    image: "#",
-    verifiedFarmer: true,
+    verifiedPassenger: true,
   },
   {
     id: "ae004",
-    farmerName: "Wahyu Fairuz Daniswara",
-    serviceType: "#",
+    passengerName: "Wahyu Iruz",
+    serviceType: "Harga Yang Terjangkau",
     date: "30-11-2024",
-    usageType: "#",
+    usageType: "Ramah di kantong Mahasiswa",
     content:
-      "#",
+      "Harganya Ramah di kantong, Saya pribadi sebagai mahasiswa yang suka healing cukup terbantu dengan adanya E-Bus EcoNova ini, selain ramah dikantong juga ramah bagi lingkungan.",
     image: "#",
-    verifiedFarmer: true,
+    verifiedPassenger: true,
   },
 ];
 
@@ -137,9 +115,9 @@ export default function IndexReview() {
                     <div className="space-y-1">
                       <div className="flex items-center gap-2">
                         <h3 className="text-lg font-semibold text-gray-900">
-                          {currentReview.farmerName}
+                          {currentReview.passengerName}
                         </h3>
-                        {currentReview.verifiedFarmer && (
+                        {currentReview.verifiedPassenger && (
                           <BadgeCheck className="w-5 h-5 text-violet-500" />
                         )}
                       </div>
@@ -169,7 +147,7 @@ export default function IndexReview() {
           <div className="relative">
             <div className="aspect-square rounded-2xl overflow-hidden shadow-2xl bg-white">
               <img
-                src="#"
+                src="Passenger1.PNG"
                 alt="Passenger Review"
                 className="w-full h-full object-cover"
               />

@@ -11,6 +11,7 @@ export default function LoginForm() {
   const navigate = useNavigate();
 
   const validUsers = [
+    { email: "excellchriatian12@gmail.com", password: "12345678", name: "Excell Christian"},
     { email: "user@example.com", password: "password123", name: "Excell" },
     { email: "admin@example.com", password: "admin123", name: "Admin User" }
   ];

@@ -37,7 +37,7 @@ const BookingPage = () => {
     localStorage.removeItem('isAuthenticated');
     localStorage.removeItem('userName');
     localStorage.removeItem('userEmail');
-    navigate("/login");
+    navigate("/home");
   };
 
   const [formData, setFormData] = useState({
