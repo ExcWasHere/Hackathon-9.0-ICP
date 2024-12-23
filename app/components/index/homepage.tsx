@@ -14,14 +14,14 @@ const heroContent: SlideContent[] = [
     title: "Mencegah Polusi di Indonesia",
     subtitle: "Inovasi Berkelanjutan untuk Indonesia",
     category: "Visi",
-    image: "E-Bus1.jpg",
+    image: "EcoNova.jpg",
   },
   {
     id: 2,
     title: "Dari Listrik, Untuk Bebas Polusi",
     subtitle: "Melestarikan Tradisi, Merangkul Teknologi",
     category: "Misi",
-    image: "E-Bus2.jpg",
+    image: "E-Bus1.jpg",
   },
   {
     id: 3,

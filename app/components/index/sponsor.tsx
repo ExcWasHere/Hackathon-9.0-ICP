@@ -12,31 +12,31 @@ interface Sponsor {
 const sponsorsData: Sponsor[] = [
   {
     id: 1,
-    name: "TechNova Solutions",
-    logo: "https://via.placeholder.com/150?text=Logo+1",
-    description: "Inovator terdepan dalam solusi teknologi enterprise",
-    websiteUrl: "https://technova.example.com"
+    name: "Lorem Ipsum",
+    logo: "https://via.placeholder.com/150?text=LogoIpsum+1",
+    description: "LoremIpsum",
+    websiteUrl: "#"
   },
   {
     id: 2,
-    name: "GlobalInnovate",
-    logo: "https://via.placeholder.com/150?text=Logo+2",
-    description: "Mendorong inovasi global melalui teknologi canggih",
-    websiteUrl: "https://globalinnovate.example.com"
+    name: "Lorem Ipsum",
+    logo: "https://via.placeholder.com/150?text=LogoIpsum+2",
+    description: "LoremIpsum",
+    websiteUrl: "#"
   },
   {
     id: 3,
-    name: "CodeCraft Systems",
-    logo: "https://via.placeholder.com/150?text=Logo+3",
-    description: "Ahli dalam pengembangan perangkat lunak kustom",
-    websiteUrl: "https://codecraft.example.com"
+    name: "Lorem Ipsum",
+    logo: "https://via.placeholder.com/150?text=LogoIpsum+3",
+    description: "LoremIpsum",
+    websiteUrl: "#"
   },
   {
     id: 4,
-    name: "DataPulse Analytics",
-    logo: "https://via.placeholder.com/150?text=Logo+4",
-    description: "Transformasi data menjadi wawasan strategis",
-    websiteUrl: "https://datapulse.example.com"
+    name: "Lorem Ipsum",
+    logo: "https://via.placeholder.com/150?text=LogoIpsum+4",
+    description: "LoremIpsum",
+    websiteUrl: "#"
   }
 ];
 
