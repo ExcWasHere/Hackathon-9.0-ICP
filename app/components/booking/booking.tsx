@@ -129,18 +129,41 @@ const BookingPage = () => {
     setLoading(true);
     setError("");
     setShowRecommendations(false);
-
+  
     try {
       await new Promise(resolve => setTimeout(resolve, 1500));
-      
       const recs = getDummyRecommendations(formData.toLocation);
       const ticketPrice = calculateTicketPrice(formData);
+      const bookingData = {
+        id: Date.now().toString(),
+        from: formData.fromLocation,
+        to: formData.toLocation,
+        date: formData.date,
+        time: formData.time,
+        busType: formData.busType,
+        price: ticketPrice,
+        status: "Confirmed",
+        seatNumber: Math.floor(Math.random() * 40) + 1,
+        estimatedDuration: "2h 30m",
+      };
+  
+      const savedSchedule = localStorage.getItem('scheduleData');
+      let scheduleData = savedSchedule ? JSON.parse(savedSchedule) : { upcoming: [], completed: [] };
       
+      scheduleData.upcoming.push(bookingData);
+      localStorage.setItem('scheduleData', JSON.stringify(scheduleData));
+
+      const event = new StorageEvent('storage', {
+        key: 'newBooking',
+        newValue: JSON.stringify(bookingData)
+      });
+      window.dispatchEvent(event);
       setRecommendations({
         ...recs,
         ticketPrice
       });
       setShowRecommendations(true);
+      alert('Booking successful! Check your schedule for details.');
     } catch (error) {
       setError(error.message);
       console.error("Booking error:", error);

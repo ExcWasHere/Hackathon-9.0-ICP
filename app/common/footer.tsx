@@ -17,10 +17,10 @@ export default function Footer() {
           {/* Logo and Description Section */}
           <div className="lg:w-1/3 mb-8 lg:mb-0">
             <h2 className="text-3xl font-bold">
-              Electrical-<span className="text-violet-400">Bus</span>
+              Eco<span className="text-violet-400">Nova</span>
             </h2>
             <p className="mt-4 text-sm lg:text-base text-white/80 max-w-md">
-              Electrical-Bus berupaya mendukung pelestarian lingkungan dan pembangunan berkelanjutan
+              EcoNova berupaya mendukung pelestarian lingkungan dan pembangunan berkelanjutan
               demi masa depan Indonesia yang lebih baik untuk generasi mendatang.
             </p>
           </div>
@@ -34,7 +34,7 @@ export default function Footer() {
                 Our Story
               </Link>
               <Link to="/why-terratopia" className="hover:text-violet-200 transition-colors">
-                Why Electrical-Bus?
+                Why EcoNova?
               </Link>
               <Link to="/testimonial" className="hover:text-violet-200 transition-colors">
                 Testimonials
@@ -77,7 +77,7 @@ export default function Footer() {
             onClick={handleClick}
           >
             <h2 className="text-2xl font-bold">
-              Electrical-<span className="text-violet-300">Bus</span>
+              Eco<span className="text-violet-300">Nova</span>
             </h2>
             <ChevronRight
               size={24}
@@ -93,7 +93,7 @@ export default function Footer() {
           >
             {/* Description */}
             <p className="text-sm text-white/80">
-              Electrical-Bus berupaya mendukung pelestarian lingkungan dan pembangunan berkelanjutan
+              EcoNova berupaya mendukung pelestarian lingkungan dan pembangunan berkelanjutan
               demi masa depan bumi yang lebih baik untuk generasi mendatang.
             </p>
 
@@ -106,7 +106,7 @@ export default function Footer() {
                     Our Story
                   </Link>
                   <Link to="/why-terratopia" className="hover:text-violet-200">
-                    Why Electrical-Bus?
+                    Why EcoNova?
                   </Link>
                   <Link to="/testimonial" className="hover:text-violet-200">
                     Testimonials
