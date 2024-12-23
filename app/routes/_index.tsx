@@ -1,10 +1,10 @@
 import type { MetaFunction } from "@remix-run/node";
 import Footer from "~/common/footer";
 import Header from "~/common/header";
-import IndexDiscoverSection from "~/components/discover";
-import IndexHero from "~/components/homepage";
-import IndexReview from "~/components/review";
-import IndexLogo from "~/components/sponsor";
+import IndexDiscoverSection from "~/components/index/discover";
+import IndexHero from "~/components/index/homepage";
+import IndexReview from "~/components/index/review";
+import IndexLogo from "~/components/index/sponsor";
 
 export const meta: MetaFunction = () => {
   return [

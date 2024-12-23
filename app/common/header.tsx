@@ -33,7 +33,7 @@ const Header: React.FC<HeaderProps> = () => {
     }
   }, [currentPage.pathname]);
 
-  const navItems = ["Home", "About Us", "Booking"];
+  const navItems = ["Home", "About Us", "Support"];
 
   const NavLinks = () => (
     <>
@@ -64,7 +64,7 @@ const Header: React.FC<HeaderProps> = () => {
       >
         <div>
           <h1 className="text-xl font-bold">
-            Electrical-<span className="text-violet-400">Bus</span>
+            Eco<span className="text-violet-400">Nova</span>
           </h1>
         </div>
 
